@@ -12,6 +12,18 @@ builder.Services.AddControllers()
         options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 builder.Services.AddSingleton<IItemService<Beer>, BeerService>();
 
+string originName = "AllowSpecificOrigins";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: originName,
+                      policy  =>
+                      {
+                          policy.WithOrigins(builder.Configuration["AllowedOrigins"]!.Split(";"))
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                      });
+});
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -25,6 +37,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(originName);
 
 app.UseHttpsRedirection();
 

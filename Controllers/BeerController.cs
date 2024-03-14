@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BeerExplorerApi.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("/api/[controller]")]
 public class BeerController : ControllerBase
 {
     private readonly IItemService<Beer> _beerService;
